@@ -21,6 +21,10 @@ class AuthPage extends StatefulWidget {
 class AuthPageState extends State<AuthPage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -29,7 +33,7 @@ class AuthPageState extends State<AuthPage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-
+//todo: change these TextField's to TextFormField's to leverage the inbuilt validation capabilities
     final emailField = TextField(
       obscureText: false,
       style: style,

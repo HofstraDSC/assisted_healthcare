@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+class InsuranceItem {
+  int value;
+  String name;
+  InsuranceItem(this.value, this.name);
+}
+
 class RegisterForm extends StatefulWidget {
   RegisterForm({Key key, this.title}) : super(key: key);
   final String title;
@@ -10,6 +16,33 @@ class RegisterForm extends StatefulWidget {
 
 class RegisterFormState extends State<RegisterForm> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  List<InsuranceItem> _dropdownItems = [
+    InsuranceItem(1, "First Value"),
+    InsuranceItem(2, "Second Item"),
+    InsuranceItem(3, "Third Item"),
+    InsuranceItem(4, "Fourth Item")
+  ];
+  List<DropdownMenuItem<InsuranceItem>> _dropdownMenuItems;
+  InsuranceItem _selectedItem;
+
+  void initState() {
+    super.initState();
+    _dropdownMenuItems = buildDropDownMenuItems(_dropdownItems);
+    _selectedItem = _dropdownMenuItems[0].value;
+  }
+
+  List<DropdownMenuItem<InsuranceItem>> buildDropDownMenuItems(List listItems) {
+    List<DropdownMenuItem<InsuranceItem>> items = [];
+    for (InsuranceItem listItem in listItems) {
+      items.add(
+        DropdownMenuItem(
+          child: Text(listItem.name),
+          value: listItem,
+        ),
+      );
+    }
+    return items;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +81,30 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Password",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final insuranceSelector = Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all()),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                  value: _selectedItem,
+                  items: _dropdownMenuItems,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedItem = value;
+                    });
+                  }),
+            ),
+          ),
+        ),
+        //Text("You select ${_selectedItem.name}"),
+      ],
     );
     final registerButton = Material(
       elevation: 5.0,
@@ -89,6 +146,10 @@ class RegisterFormState extends State<RegisterForm> {
                 emailField,
                 SizedBox(height: 25.0),
                 passwordField,
+                SizedBox(
+                  height: 35.0,
+                ),
+                insuranceSelector,
                 SizedBox(
                   height: 35.0,
                 ),
