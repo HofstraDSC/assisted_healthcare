@@ -33,6 +33,10 @@ class AuthPageState extends State<AuthPage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
+    final guestSignIn =
+        ElevatedButton(child: Text('Sign in as guest'), onPressed: () async {});
+
 //todo: change these TextField's to TextFormField's to leverage the inbuilt validation capabilities
     final emailField = TextField(
       obscureText: false,

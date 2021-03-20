@@ -46,6 +46,9 @@ class RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final guestSignIn =
+        ElevatedButton(child: Text('Sign in as guest'), onPressed: () async {});
+
     final firstNameField = TextField(
       obscureText: false,
       style: style,
