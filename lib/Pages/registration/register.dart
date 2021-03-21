@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../services/auth.dart';
+import '../../services/auth.dart';
 
 class InsuranceItem {
   int value;
@@ -44,10 +46,21 @@ class RegisterFormState extends State<RegisterForm> {
     return items;
   }
 
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    final guestSignIn =
-        ElevatedButton(child: Text('Sign in as guest'), onPressed: () async {});
+    final guestSignIn = ElevatedButton(
+        child: Text('Sign in as guest'),
+        onPressed: () async {
+          dynamic result = await _auth.signInAnon();
+          if (result == null) {
+            print('error signing in');
+          } else {
+            print('signed in');
+            print(result);
+          }
+        });
 
     final firstNameField = TextField(
       obscureText: false,
@@ -141,6 +154,7 @@ class RegisterFormState extends State<RegisterForm> {
                     fit: BoxFit.contain,
                   ),
                 ),
+                guestSignIn,
                 SizedBox(height: 25.0),
                 firstNameField,
                 SizedBox(height: 25.0),

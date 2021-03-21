@@ -13,4 +13,10 @@ class AuthService {
       return null;
     }
   }
+
+  // sign in email/passwd
+
+  // register email/passwd
+
+  // sign out
 }
