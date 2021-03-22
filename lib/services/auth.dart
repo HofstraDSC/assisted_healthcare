@@ -9,6 +9,11 @@ class AuthService {
     return user != null ? TheUser(uid: user.uid) : null;
   }
 
+  // auth change user stream
+  Stream<TheUser> get user {
+    return _auth.authStateChanges().map(_theUserFromUser);
+  }
+
   //Sign in anon
   Future signInAnon() async {
     try {
@@ -26,4 +31,12 @@ class AuthService {
   // register email/passwd
 
   // sign out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../services/auth.dart';
-import '../../services/auth.dart';
 
 class InsuranceItem {
   int value;
