@@ -1,3 +1,4 @@
+import 'package:assisted_healthcare/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth.dart';
 
@@ -8,8 +9,8 @@ class InsuranceItem {
 }
 
 class RegisterForm extends StatefulWidget {
-  RegisterForm({Key key, this.title}) : super(key: key);
-  final String title;
+  final Function toggleView;
+  RegisterForm({this.toggleView});
 
   @override
   RegisterFormState createState() => RegisterFormState();
@@ -45,23 +46,15 @@ class RegisterFormState extends State<RegisterForm> {
     return items;
   }
 
-  final AuthService _auth = AuthService();
+  // text field state
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
-    final guestSignIn = ElevatedButton(
-        child: Text('Sign in as guest'),
-        onPressed: () async {
-          dynamic result = await _auth.signInAnon();
-          if (result == null) {
-            print('error signing in');
-          } else {
-            print('signed in');
-            print(result.uid);
-          }
-        });
-
-    final firstNameField = TextField(
+    final firstNameField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -69,8 +62,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "First Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => firstName = val);
+      },
     );
-    final lastNameField = TextField(
+    final lastNameField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -78,8 +74,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Last Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => lastName = val);
+      },
     );
-    final emailField = TextField(
+    final emailField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -87,8 +86,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Email",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => email = val);
+      },
     );
-    final passwordField = TextField(
+    final passwordField = TextFormField(
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -96,6 +98,9 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Password",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => password = val);
+      },
     );
     final insuranceSelector = Column(
       children: <Widget>[
@@ -121,6 +126,25 @@ class RegisterFormState extends State<RegisterForm> {
         //Text("You select ${_selectedItem.name}"),
       ],
     );
+
+    // takes you to login page
+    final logInButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          widget.toggleView();
+        },
+        child: Text("Log in",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -153,7 +177,6 @@ class RegisterFormState extends State<RegisterForm> {
                     fit: BoxFit.contain,
                   ),
                 ),
-                guestSignIn,
                 SizedBox(height: 25.0),
                 firstNameField,
                 SizedBox(height: 25.0),
@@ -166,6 +189,10 @@ class RegisterFormState extends State<RegisterForm> {
                   height: 35.0,
                 ),
                 insuranceSelector,
+                SizedBox(
+                  height: 35.0,
+                ),
+                logInButton,
                 SizedBox(
                   height: 35.0,
                 ),
