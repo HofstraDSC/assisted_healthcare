@@ -17,11 +17,34 @@ class RegisterForm extends StatefulWidget {
 class RegisterFormState extends State<RegisterForm> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   List<InsuranceItem> _dropdownItems = [
-    InsuranceItem(1, "First Value"),
-    InsuranceItem(2, "Second Item"),
-    InsuranceItem(3, "Third Item"),
-    InsuranceItem(4, "Fourth Item")
+    InsuranceItem(1, "Aetna"),
+    InsuranceItem(2, "Beacon Health"),
+    InsuranceItem(3, "Blue Cross Blue Shield Excellus"),
+    InsuranceItem(4, "CHAMPVA"),
+    InsuranceItem(5, "CIGNA"),
+    InsuranceItem(6, "CDPHP"),
+    InsuranceItem(7, "Department of Labor (Federal Workers’ Comp)"),
+    InsuranceItem(8, "Empire Plan"),
+    InsuranceItem(9, "Fidelis"),
+    InsuranceItem(10, "First Health Network "),
+    InsuranceItem(11, "GHI / Emblem PPO"),
+    InsuranceItem(12, "Integrated Health Plan"),
+    InsuranceItem(13, "Lifetime Benefit Solutions"),
+    InsuranceItem(14, "Magna Care"),
+    InsuranceItem(15, "Martin’s Point US Family Health Plan"),
+    InsuranceItem(16, "Medicare"),
+    InsuranceItem(17, "Medicaid"),
+    InsuranceItem(18, "Meritain Health"),
+    InsuranceItem(19, "MVP"),
+    InsuranceItem(20, "No Fault"),
+    InsuranceItem(21, "Preferred Healthcare Systems (PHCS)"),
+    InsuranceItem(22, "Railroad Medicare"),
+    InsuranceItem(23, "Unified IPA"),
+    InsuranceItem(24, "United Health Care"),
+    InsuranceItem(25, "Univera"),
+    InsuranceItem(26, "Workers’ Compensation"),
   ];
+
   List<DropdownMenuItem<InsuranceItem>> _dropdownMenuItems;
   InsuranceItem _selectedItem;
 
@@ -87,12 +110,13 @@ class RegisterFormState extends State<RegisterForm> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: const EdgeInsets.only(left: 30.0, right: 10.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
                 border: Border.all()),
             child: DropdownButtonHideUnderline(
               child: DropdownButton(
+                  isExpanded: true,
                   value: _selectedItem,
                   items: _dropdownMenuItems,
                   onChanged: (value) {
@@ -103,7 +127,6 @@ class RegisterFormState extends State<RegisterForm> {
             ),
           ),
         ),
-        //Text("You select ${_selectedItem.name}"),
       ],
     );
     final registerButton = Material(
@@ -147,6 +170,7 @@ class RegisterFormState extends State<RegisterForm> {
                 SizedBox(height: 25.0),
                 passwordField,
                 SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.65,
                   height: 35.0,
                 ),
                 insuranceSelector,
