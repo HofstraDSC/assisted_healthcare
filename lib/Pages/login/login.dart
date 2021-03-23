@@ -1,5 +1,7 @@
 import 'package:assisted_healthcare/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../services/auth.dart';
 
 class AuthPage extends StatefulWidget {
   final Function toggleView;
@@ -18,8 +20,10 @@ class AuthPageState extends State<AuthPage> {
 
   String email = '';
   String password = '';
+  String error = '';
 
-  final AuthService _auth = AuthService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +60,12 @@ class AuthPageState extends State<AuthPage> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          print(email);
-          print(password);
+        onPressed: () async {
+          dynamic result = await _auth.signInWithEmailAndPassword(
+              email: email, password: password);
+          if (result == null) {
+            setState(() => error = 'Could not sign with those credentials');
+          }
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -75,7 +82,7 @@ class AuthPageState extends State<AuthPage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
-          dynamic result = await _auth.signInAnon();
+          dynamic result = await _authService.signInAnon();
           if (result == null) {
             print('error signing in');
           } else {
@@ -132,7 +139,11 @@ class AuthPageState extends State<AuthPage> {
                     SizedBox(
                       height: 35.0,
                     ),
-                    guestSignIn
+                    guestSignIn,
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    )
                   ],
                 ),
               ),

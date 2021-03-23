@@ -17,6 +17,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterForm> {
+  final AuthService _auth = AuthService();
+
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   List<InsuranceItem> _dropdownItems = [
     InsuranceItem(1, "First Value"),
@@ -51,6 +53,7 @@ class RegisterFormState extends State<RegisterForm> {
   String lastName = '';
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +155,13 @@ class RegisterFormState extends State<RegisterForm> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () async {
+          dynamic result =
+              await _auth.registerWithEmailAndPassword(email, password);
+          if (result == null) {
+            setState(() => error = 'Please supply valid email');
+          }
+        },
         child: Text("Register",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -198,8 +207,12 @@ class RegisterFormState extends State<RegisterForm> {
                 ),
                 registerButton,
                 SizedBox(
-                  height: 15.0,
+                  height: 35.0,
                 ),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                )
               ],
             ),
           ),

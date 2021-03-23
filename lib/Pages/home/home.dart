@@ -3,10 +3,9 @@ import 'package:assisted_healthcare/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// This can be deleted, just added for debugging
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
-
+// TODO: Display "Hello, firstName" in home
   @override
   Widget build(BuildContext context) {
     return Scaffold(
