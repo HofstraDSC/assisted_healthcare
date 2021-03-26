@@ -106,6 +106,8 @@ Widget _buildList() {
 >>>>>>> main
 }  
   
+import 'package:flutter/material.dart';
+import 'package:assisted_healthcare/services/auth.dart';  
 class _ExamplePageState extends State<ExamplePage> {
   // controls the text label we use as a search bar
   final TextEditingController _filter = new TextEditingController();
