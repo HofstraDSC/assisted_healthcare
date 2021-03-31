@@ -1,9 +1,9 @@
-//* This is where the search ui and bar will go
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assisted_healthcare/services/DataController.dart';
 import 'package:get/get.dart';
+import 'package:assisted_healthcare/services/auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -11,6 +11,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final AuthService _auth = AuthService();
   final TextEditingController searchController = TextEditingController();
   QuerySnapshot snapshotData;
   bool isExecuted = false;
@@ -35,15 +36,23 @@ class _SearchState extends State<Search> {
     }
 
     var scaffold = Scaffold(
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.clear), onPressed: () {}),
+      // floatingActionButton:
+      //     FloatingActionButton(child: Icon(Icons.clear), onPressed: () {}),
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: [
+          TextButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('Logout'),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+            style: TextButton.styleFrom(primary: Colors.black),
+          ),
           GetBuilder<DataController>(
             init: DataController(),
             builder: (val) {
-              return IconButton(
+              var search_icon = IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
                     val.queryData(searchController.text).then((value) {
@@ -53,6 +62,7 @@ class _SearchState extends State<Search> {
                       });
                     });
                   });
+              return search_icon;
             },
           )
         ],
