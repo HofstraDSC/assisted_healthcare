@@ -54,10 +54,10 @@ class _SearchState extends State<Search> {
           )
         ],
         title: TextField(
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
               hintText: 'Search',
-              hintStyle: TextStyle(color: Colors.white)), //inputdeco
+              hintStyle: TextStyle(color: Colors.black)), //inputdeco
           controller: searchController,
         ), //textfield
         backgroundColor: Colors.white,
@@ -68,6 +68,14 @@ class _SearchState extends State<Search> {
               child: Center(child: Text('Search Doctors')),
             ),
     );
-    return scaffold; //scaffold
+    return scaffold(
+      FloatingActionButton: FloatingActionButton(
+          child: Icon(Icons.clear),
+          onPressed: () {
+            setState(() {
+              isExecuted = false;
+            });
+          }),
+    ); //scaffold
   }
 }
