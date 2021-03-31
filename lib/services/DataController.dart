@@ -10,9 +10,12 @@ class DataController extends GetxController {
   }
 
   Future queryData(String queryString) async {
-    return FirebaseFirestore.instance
-        .collection('featured')
-        .where('title', isGreaterThanOrEqualTo: queryString)
-        .get();
+    print(FirebaseFirestore.instance
+        .collection('doctors')
+        .doc("Bassett")
+        .get()
+        .toString());
+    // .where(FieldPath.documentId(), isGreaterThanOrEqualTo: queryString)
+    // .get();
   }
 }
