@@ -1,5 +1,8 @@
 import 'package:assisted_healthcare/Pages/login/login.dart';
+import 'package:assisted_healthcare/models/user.dart';
+import 'package:assisted_healthcare/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../services/auth.dart';
 
 class InsuranceItem {
@@ -51,6 +54,7 @@ class RegisterFormState extends State<RegisterForm> {
   // text field state
   String firstName = '';
   String lastName = '';
+  String insurance = '';
   String email = '';
   String password = '';
   String error = '';
@@ -115,7 +119,7 @@ class RegisterFormState extends State<RegisterForm> {
                 borderRadius: BorderRadius.circular(10.0),
                 border: Border.all()),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton(
+              child: DropdownButtonFormField(
                   value: _selectedItem,
                   items: _dropdownMenuItems,
                   onChanged: (value) {
@@ -126,7 +130,6 @@ class RegisterFormState extends State<RegisterForm> {
             ),
           ),
         ),
-        //Text("You select ${_selectedItem.name}"),
       ],
     );
 
@@ -161,6 +164,9 @@ class RegisterFormState extends State<RegisterForm> {
           if (result == null) {
             setState(() => error = 'Please supply valid email');
           }
+          insurance = _selectedItem.name;
+          await DatabaseService(uid: result.uid)
+              .updateUserData(firstName, lastName, insurance);
         },
         child: Text("Register",
             textAlign: TextAlign.center,
@@ -168,6 +174,7 @@ class RegisterFormState extends State<RegisterForm> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Center(

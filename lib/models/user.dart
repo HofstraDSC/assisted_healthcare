@@ -1,8 +1,14 @@
-// TODO: associate user w firstName and lastName
 class TheUser {
+  final String uid;
+// Controls what properties user has
+  TheUser({this.uid});
+}
+
+class UserData {
   final String uid;
   final String firstName;
   final String lastName;
-// Controls what properties user has
-  TheUser({this.uid, this.firstName, this.lastName});
+  final String insurance;
+
+  UserData({this.uid, this.firstName, this.lastName, this.insurance});
 }

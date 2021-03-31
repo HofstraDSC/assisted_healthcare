@@ -1,4 +1,6 @@
+import 'package:assisted_healthcare/Pages/registration/register.dart';
 import 'package:assisted_healthcare/models/user.dart';
+import 'package:assisted_healthcare/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -45,6 +47,9 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+      // create new doc for user w uid
+      await DatabaseService(uid: result.user.uid)
+          .updateUserData('firstName', 'lastName', 'insurance');
       return _theUserFromUser(user);
     } catch (e) {
       print(e.toString());
