@@ -25,7 +25,10 @@ class _SearchState extends State<Search> {
               backgroundImage:
                   NetworkImage(snapshotData.docs[index].data()['image']),
             ),
-            title: Text(snapshotData.docs[index].data()['image']),
+            title: Text(
+              snapshotData.docs[index].data()['title'],
+              style: TextStyle(color: Colors.black),
+            ),
           );
         },
       );
@@ -68,14 +71,6 @@ class _SearchState extends State<Search> {
               child: Center(child: Text('Search Doctors')),
             ),
     );
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.clear),
-          onPressed: () {
-            setState(() {
-              isExecuted = false;
-            });
-          }),
-    ); //scaffold
+    return scaffold; //scaffold
   }
 }
