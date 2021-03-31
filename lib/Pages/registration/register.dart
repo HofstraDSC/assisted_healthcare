@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:assisted_healthcare/Pages/login/login.dart';
+import 'package:assisted_healthcare/models/user.dart';
+import 'package:assisted_healthcare/services/database.dart';
+import 'package:provider/provider.dart';
+import '../../services/auth.dart';
+
 class InsuranceItem {
   int value;
   String name;
@@ -7,7 +13,8 @@ class InsuranceItem {
 }
 
 class RegisterForm extends StatefulWidget {
-  RegisterForm({Key key, this.title}) : super(key: key);
+  final Function toggleView;
+  RegisterForm({Key key, this.title, this.toggleView}) : super(key: key);
   final String title;
 
   @override
@@ -15,6 +22,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterForm> {
+  final AuthService _auth = AuthService();
+
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   List<InsuranceItem> _dropdownItems = [
     InsuranceItem(1, "Aetna"),
@@ -67,9 +76,16 @@ class RegisterFormState extends State<RegisterForm> {
     return items;
   }
 
+  String firstName = '';
+  String lastName = '';
+  String insurance = '';
+  String email = '';
+  String password = '';
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
-    final firstNameField = TextField(
+    final firstNameField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -77,8 +93,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "First Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => firstName = val);
+      },
     );
-    final lastNameField = TextField(
+    final lastNameField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -86,8 +105,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Last Name",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => lastName = val);
+      },
     );
-    final emailField = TextField(
+    final emailField = TextFormField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -95,8 +117,11 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Email",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => email = val);
+      },
     );
-    final passwordField = TextField(
+    final passwordField = TextFormField(
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -104,6 +129,9 @@ class RegisterFormState extends State<RegisterForm> {
           hintText: "Password",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+      onChanged: (val) {
+        setState(() => password = val);
+      },
     );
     final insuranceSelector = Column(
       children: <Widget>[
@@ -129,6 +157,24 @@ class RegisterFormState extends State<RegisterForm> {
         ),
       ],
     );
+    // takes you to login page
+    final logInButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          widget.toggleView();
+        },
+        child: Text("Log in",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -136,13 +182,23 @@ class RegisterFormState extends State<RegisterForm> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () async {
+          dynamic result =
+              await _auth.registerWithEmailAndPassword(email, password);
+          if (result == null) {
+            setState(() => error = 'Please supply valid email');
+          }
+          insurance = _selectedItem.name;
+          await DatabaseService(uid: result.uid)
+              .updateUserData(firstName, lastName, insurance);
+        },
         child: Text("Register",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Center(
@@ -181,6 +237,10 @@ class RegisterFormState extends State<RegisterForm> {
                 SizedBox(
                   height: 15.0,
                 ),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                )
               ],
             ),
           ),
