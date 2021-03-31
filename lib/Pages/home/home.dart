@@ -68,8 +68,8 @@ class _SearchState extends State<Search> {
               child: Center(child: Text('Search Doctors')),
             ),
     );
-    return scaffold(
-      FloatingActionButton: FloatingActionButton(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
           child: Icon(Icons.clear),
           onPressed: () {
             setState(() {
