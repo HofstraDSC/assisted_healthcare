@@ -1,3 +1,5 @@
+import 'package:assisted_healthcare/DatabaseRouter.dart';
+import 'package:assisted_healthcare/Pages/home/doctor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assisted_healthcare/services/DataController.dart';
@@ -57,11 +59,33 @@ class _SearchState extends State<Search> {
         ), //textfield
         backgroundColor: Colors.white,
       ), //appbar
-      body: isExecuted
-          ? searchedData()
-          : Container(
-              child: Center(child: Text('Search Doctors')),
-            ),
+      body: ListView.builder(
+          itemCount: DatabaseRouter().clinics.values.toList()[0].doctors.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+                onTap: () {
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (ctxt) {
+                    return Doctor_Page(DatabaseRouter()
+                        .clinics
+                        .values
+                        .toList()[0]
+                        .doctors[index]);
+                  }));
+                },
+                title: Text(DatabaseRouter()
+                    .clinics
+                    .values
+                    .toList()[0]
+                    .doctors[index]
+                    .name
+                    .toString()));
+          }
+          //? searchedData()
+          //: Container(
+          // child: Center(child: Text('Search Doctors')),
+
+          ),
       //If you want access the database, new DatabaseRouter().clinics;
       // for a list you can use new DatabaseRouter().clinics.values;
     );
