@@ -17,23 +17,7 @@ class _SearchState extends State<Search> {
   bool isExecuted = false;
   @override
   Widget build(BuildContext context) {
-    Widget searchedData() {
-      return ListView.builder(
-        itemCount: snapshotData.docs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage:
-                  NetworkImage(snapshotData.docs[index].data()['image']),
-            ),
-            title: Text(
-              snapshotData.docs[index].data()['title'],
-              style: TextStyle(color: Colors.black),
-            ),
-          );
-        },
-      );
-    }
+
 
     var scaffold = Scaffold(
       // floatingActionButton:
@@ -80,7 +64,26 @@ class _SearchState extends State<Search> {
           : Container(
               child: Center(child: Text('Search Doctors')),
             ),
+      //If you want access the database, new DatabaseRouter().clinics;
+      // for a list you can use new DatabaseRouter().clinics.values;
     );
     return scaffold; //scaffold
+  }
+  Widget searchedData() {
+    return ListView.builder(
+      itemCount: snapshotData.docs.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage:
+            NetworkImage(snapshotData.docs[index].data()['image']),
+          ),
+          title: Text(
+            snapshotData.docs[index].data()['title'],
+            style: TextStyle(color: Colors.black),
+          ),
+        );
+      },
+    );
   }
 }
