@@ -17,8 +17,6 @@ class _SearchState extends State<Search> {
   bool isExecuted = false;
   @override
   Widget build(BuildContext context) {
-
-
     var scaffold = Scaffold(
       // floatingActionButton:
       //     FloatingActionButton(child: Icon(Icons.clear), onPressed: () {}),
@@ -36,7 +34,7 @@ class _SearchState extends State<Search> {
           GetBuilder<DataController>(
             init: DataController(),
             builder: (val) {
-              var search_icon = IconButton(
+              var searchIcon = IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
                     val.queryData(searchController.text).then((value) {
@@ -46,7 +44,7 @@ class _SearchState extends State<Search> {
                       });
                     });
                   });
-              return search_icon;
+              return searchIcon;
             },
           )
         ],
@@ -69,6 +67,7 @@ class _SearchState extends State<Search> {
     );
     return scaffold; //scaffold
   }
+
   Widget searchedData() {
     return ListView.builder(
       itemCount: snapshotData.docs.length,
@@ -76,7 +75,7 @@ class _SearchState extends State<Search> {
         return ListTile(
           leading: CircleAvatar(
             backgroundImage:
-            NetworkImage(snapshotData.docs[index].data()['image']),
+                NetworkImage(snapshotData.docs[index].data()['image']),
           ),
           title: Text(
             snapshotData.docs[index].data()['title'],

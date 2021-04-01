@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:assisted_healthcare/Pages/login/login.dart';
-import 'package:assisted_healthcare/models/user.dart';
 import 'package:assisted_healthcare/services/database.dart';
-import 'package:provider/provider.dart';
 import '../../services/auth.dart';
 
 class InsuranceItem {
@@ -157,23 +153,6 @@ class RegisterFormState extends State<RegisterForm> {
         ),
       ],
     );
-    // takes you to login page
-    final logInButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          widget.toggleView();
-        },
-        child: Text("Log in",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
 
     final registerButton = Material(
       elevation: 5.0,
@@ -200,52 +179,66 @@ class RegisterFormState extends State<RegisterForm> {
     );
 
     return Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          title: Text('Register'),
+          actions: <Widget>[
+            TextButton.icon(
+                onPressed: () {
+                  widget.toggleView();
+                },
+                // takes you to login page
+                icon: Icon(Icons.person),
+                label: Text('Log In'),
+                style: TextButton.styleFrom(primary: Colors.black))
+          ],
+        ),
         body: SingleChildScrollView(
-      child: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 155.0,
-                  child: Image.asset(
-                    "assets/logo.png",
-                    fit: BoxFit.contain,
-                  ),
+          child: Center(
+            child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 155.0,
+                      child: Image.asset(
+                        "assets/logo.png",
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(height: 25.0),
+                    firstNameField,
+                    SizedBox(height: 25.0),
+                    lastNameField,
+                    SizedBox(height: 45.0),
+                    emailField,
+                    SizedBox(height: 25.0),
+                    passwordField,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      height: 35.0,
+                    ),
+                    insuranceSelector,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    registerButton,
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    )
+                  ],
                 ),
-                SizedBox(height: 25.0),
-                firstNameField,
-                SizedBox(height: 25.0),
-                lastNameField,
-                SizedBox(height: 45.0),
-                emailField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  height: 35.0,
-                ),
-                insuranceSelector,
-                SizedBox(
-                  height: 35.0,
-                ),
-                registerButton,
-                SizedBox(
-                  height: 15.0,
-                ),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }
