@@ -1,7 +1,7 @@
-class DoctorsOffice {
+class DoctorList {
   List<Doctor> doctors;
 
-  DoctorsOffice(List<dynamic> doctors) {
+  DoctorList(List<dynamic> doctors) {
     this.doctors = [];
     for (Map map in doctors) {
       this.doctors.add(new Doctor(map['name'] as String, map['specialties'],

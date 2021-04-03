@@ -1,5 +1,5 @@
 import 'package:assisted_healthcare/DatabaseRouter.dart';
-import 'package:assisted_healthcare/Pages/home/doctor_page.dart';
+import 'package:assisted_healthcare/Pages/home/doctor_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:assisted_healthcare/services/DataController.dart';
@@ -54,41 +54,39 @@ class _SearchState extends State<Search> {
         title: TextField(
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
-              hintText: 'Search',
+              hintText: 'Search Doctors...',
               hintStyle: TextStyle(color: Colors.black)), //inputdeco
           controller: searchController,
         ), //textfield
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.lightBlue,
       ), //appbar
       body: ListView.builder(
           itemCount: DatabaseRouter().clinics.values.toList()[0].doctors.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-                onTap: () {
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (ctxt) {
-                    return DoctorPage(DatabaseRouter()
-                        .clinics
-                        .values
-                        .toList()[0]
-                        .doctors[index]);
-                  }));
-                },
-                title: Text(DatabaseRouter()
-                    .clinics
-                    .values
-                    .toList()[0]
-                    .doctors[index]
-                    .name
-                    .toString()));
-          }
+          itemBuilder: (BuildContext context, int index) => Card(
+              elevation: 2.0,
+              child: ListTile(
+                  onTap: () {
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (ctxt) {
+                      return DetailsPage(DatabaseRouter()
+                          .clinics
+                          .values
+                          .toList()[0]
+                          .doctors[index]);
+                    }));
+                  },
+                  title: Text(DatabaseRouter()
+                      .clinics
+                      .values
+                      .toList()[0]
+                      .doctors[index]
+                      .name
+                      .toString())))
           //? searchedData()
-          //: Container(
-          // child: Center(child: Text('Search Doctors')),
 
           ),
-      //If you want access the database, new DatabaseRouter().clinics;
-      // for a list you can use new DatabaseRouter().clinics.values;
+      //*If you want access the database, new DatabaseRouter().clinics;
+      //* for a list you can use new DatabaseRouter().clinics.values;
     );
     return scaffold; //scaffold
   }

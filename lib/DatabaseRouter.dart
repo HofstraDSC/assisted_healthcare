@@ -1,10 +1,10 @@
-import 'package:assisted_healthcare/Objects/DoctorOffice.dart';
+import 'package:assisted_healthcare/Objects/Doctor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseRouter {
   static final DatabaseRouter _db = DatabaseRouter._internal();
   // List<Textbook> textbooks;
-  Map<String, DoctorsOffice> clinics;
+  Map<String, DoctorList> clinics;
 
   factory DatabaseRouter() {
     return _db;
@@ -24,11 +24,11 @@ class DatabaseRouter {
   ///
   loadOffices() async {
     //textbooks = new List();
-    clinics = new Map<String, DoctorsOffice>();
+    clinics = new Map<String, DoctorList>();
     CollectionReference ref = FirebaseFirestore.instance.collection('doctors');
     DocumentSnapshot document = await ref.doc("Doctors").get();
 
-    clinics[document.id] = new DoctorsOffice(document['doctors']);
+    clinics[document.id] = new DoctorList(document['doctors']);
     print(clinics.toString());
   }
 }
