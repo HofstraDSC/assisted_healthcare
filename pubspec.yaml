@@ -21,7 +21,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
   
 dependencies:
-  material_floating_search_bar: ^0.3.0
   firebase_auth: ^1.0.1
   cloud_firestore: ^1.0.1
   get:
