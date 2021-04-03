@@ -1,11 +1,12 @@
 import 'package:assisted_healthcare/Objects/DoctorOffice.dart';
 import 'package:flutter/material.dart';
 
-class Doctor_Page extends StatelessWidget {
+class DoctorPage extends StatelessWidget {
   Doctor doctor = null;
-  Doctor_Page(Doctor doc) {
+  DoctorPage(Doctor doc) {
     doctor = doc;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +18,9 @@ class Doctor_Page extends StatelessWidget {
             child: Center(
                 child: CircleAvatar(
               radius: 50,
+              backgroundImage: NetworkImage(
+                  'https://image.shutterstock.com/shutterstock/photos/1095249842/display_1500/stock-vector-blank-avatar-photo-place-holder-1095249842.jpg'),
+              backgroundColor: Colors.transparent,
             )),
             height: 225,
             width: double.infinity,

@@ -17,6 +17,7 @@ class _SearchState extends State<Search> {
   final TextEditingController searchController = TextEditingController();
   QuerySnapshot snapshotData;
   bool isExecuted = false;
+
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
@@ -66,7 +67,7 @@ class _SearchState extends State<Search> {
                 onTap: () {
                   Navigator.push(context,
                       new MaterialPageRoute(builder: (ctxt) {
-                    return Doctor_Page(DatabaseRouter()
+                    return DoctorPage(DatabaseRouter()
                         .clinics
                         .values
                         .toList()[0]
