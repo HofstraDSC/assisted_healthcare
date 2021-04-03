@@ -55,7 +55,7 @@ class _SearchState extends State<Search> {
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
               hintText: 'Search Doctors...',
-              hintStyle: TextStyle(color: Colors.black)), //inputdeco
+              hintStyle: TextStyle(color: Colors.black)),
           controller: searchController,
         ), //textfield
         backgroundColor: Colors.lightBlue,
