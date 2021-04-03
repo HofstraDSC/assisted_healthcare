@@ -5,11 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'DatabaseRouter.dart';
+import 'services/DatabaseRouter.dart';
 
-void main() async
-{
-
+void main() async {
   runApp(MyApp());
   await Firebase.initializeApp();
   new DatabaseRouter().init();
