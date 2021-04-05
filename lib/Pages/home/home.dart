@@ -1,4 +1,5 @@
 import 'package:assisted_healthcare/DatabaseRouter.dart';
+import 'package:assisted_healthcare/Objects/Doctor.dart';
 import 'package:assisted_healthcare/Pages/home/doctor_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,11 +13,79 @@ class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
 
+//todo: Create constructor
 class _SearchState extends State<Search> {
   final AuthService _auth = AuthService();
   final TextEditingController searchController = TextEditingController();
   QuerySnapshot snapshotData;
   bool isExecuted = false;
+
+  _SearchState() {
+    searchController.addListener(filter);
+  }
+
+  List<String> apply(List<Doctor> param) {
+    if (searchController.text != "") {
+      int count = DatabaseRouter().clinics.values.toList()[0].doctors.length;
+      for (int i = 0; i < count; i++) {
+        List<String> filtered;
+        var t = DatabaseRouter()
+            .clinics
+            .values
+            .toList()[0]
+            .doctors[i]
+            .name
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase());
+        print(t);
+        if (t) {
+          filtered
+              .add(DatabaseRouter().clinics.values.toList()[0].doctors[i].name);
+        }
+        return filtered;
+      }
+      // for (int i = 0;
+      //     i < DatabaseRouter().clinics.values.toList()[0].doctors.length;
+      //     i++) {
+      //   var filteredDoctors = print(
+      //       .where((doc) => doc.doctors[i].name
+      //           .toString()
+      //           .toLowerCase()
+      //           .contains(searchController.text.toLowerCase())));
+      // }
+    }
+  }
+
+  void filter() {
+    if (searchController.text != "") {
+      int count = DatabaseRouter().clinics.values.toList()[0].doctors.length;
+      List<String> filtered;
+      for (int i = 0; i < count; i++) {
+        var t = DatabaseRouter()
+            .clinics
+            .values
+            .toList()[0]
+            .doctors[i]
+            .name
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase());
+        print(t);
+        if (t) {
+          filtered
+              .add(DatabaseRouter().clinics.values.toList()[0].doctors[i].name);
+        }
+      }
+      // for (int i = 0;
+      //     i < DatabaseRouter().clinics.values.toList()[0].doctors.length;
+      //     i++) {
+      //   var filteredDoctors = print(
+      //       .where((doc) => doc.doctors[i].name
+      //           .toString()
+      //           .toLowerCase()
+      //           .contains(searchController.text.toLowerCase())));
+      // }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +126,7 @@ class _SearchState extends State<Search> {
               hintText: 'Search Doctors...',
               hintStyle: TextStyle(color: Colors.black)),
           controller: searchController,
+          // onChanged: () {},
         ), //textfield
         backgroundColor: Colors.lightBlue,
       ), //appbar

@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 import 'DatabaseRouter.dart';
 
 void main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(MyApp());
   new DatabaseRouter().init();
 }
 //void main() => runApp(MyApp());

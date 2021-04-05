@@ -1,6 +1,4 @@
-import 'package:assisted_healthcare/Pages/login/login.dart';
 import 'package:assisted_healthcare/Pages/registration/authenticate.dart';
-import 'package:assisted_healthcare/Pages/registration/register.dart';
 import 'package:assisted_healthcare/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
