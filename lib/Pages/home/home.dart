@@ -7,6 +7,7 @@ import 'package:assisted_healthcare/services/DataController.dart';
 import 'package:get/get.dart';
 import 'package:assisted_healthcare/services/auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -20,15 +21,37 @@ class _SearchState extends State<Search> {
   QuerySnapshot snapshotData;
   bool isExecuted = false;
 
+  List<Doctor> filteredDoctorList = [];
+  // when search is submitted, filter doctorList to just the doctors with the specified specialty
+  void onSubmitted(String value) {
+    filteredDoctorList = [];
+    List<Doctor> doctorList =
+        DatabaseRouter().clinics.values.toList()[0].doctors;
+    int length = doctorList.length;
+    for (int i = 0; i < length; i++) {
+      if (doctorList[i].specialties[0] == value) {
+        filteredDoctorList.add(doctorList[i]);
+      }
+    }
+  }
+
+  SearchBar searchBar; // declare searchBar
+  // constructor:
   _SearchState() {
     searchController.addListener(filter);
+    // create search bar:
+    searchBar = new SearchBar(
+        inBar: false,
+        setState: setState,
+        onSubmitted: onSubmitted,
+        buildDefaultAppBar: buildAppBar);
   }
 
   List<String> apply(List<Doctor> param) {
     if (searchController.text != "") {
       int count = DatabaseRouter().clinics.values.toList()[0].doctors.length;
+      List<String> filtered;
       for (int i = 0; i < count; i++) {
-        List<String> filtered;
         var t = DatabaseRouter()
             .clinics
             .values
@@ -42,7 +65,6 @@ class _SearchState extends State<Search> {
           filtered
               .add(DatabaseRouter().clinics.values.toList()[0].doctors[i].name);
         }
-        return filtered;
       }
       // for (int i = 0;
       //     i < DatabaseRouter().clinics.values.toList()[0].doctors.length;
@@ -53,6 +75,9 @@ class _SearchState extends State<Search> {
       //           .toLowerCase()
       //           .contains(searchController.text.toLowerCase())));
       // }
+      return filtered;
+    } else {
+      return null;
     }
   }
 
@@ -87,74 +112,68 @@ class _SearchState extends State<Search> {
     }
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+      title: searchBar.getSearchAction(context),
+      actions: [
+        /*GetBuilder<DataController>(
+          init: DataController(),
+          builder: (val) {
+            var searchIcon = IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  val.queryData(searchController.text).then((value) {
+                    snapshotData = value;
+                    setState(() {
+                      isExecuted = true;
+                    });
+                  });
+                });
+            return searchIcon;
+          },
+        ),*/
+        TextButton.icon(
+          icon: Icon(Icons.person),
+          label: Text('Logout'),
+          onPressed: () async {
+            await _auth.signOut();
+          },
+          style: TextButton.styleFrom(primary: Colors.black),
+        ),
+      ],
+      backgroundColor: Colors.lightBlue,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
       // floatingActionButton:
       //     FloatingActionButton(child: Icon(Icons.clear), onPressed: () {}),
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        actions: [
-          TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Logout'),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-            style: TextButton.styleFrom(primary: Colors.black),
-          ),
-          GetBuilder<DataController>(
-            init: DataController(),
-            builder: (val) {
-              var searchIcon = IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    val.queryData(searchController.text).then((value) {
-                      snapshotData = value;
-                      setState(() {
-                        isExecuted = true;
-                      });
-                    });
-                  });
-              return searchIcon;
-            },
-          )
-        ],
-        title: TextField(
+      appBar: searchBar.build(context),
+
+      /*TextField(
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
               hintText: 'Search Doctors...',
               hintStyle: TextStyle(color: Colors.black)),
           controller: searchController,
           // onChanged: () {},
-        ), //textfield
-        backgroundColor: Colors.lightBlue,
-      ), //appbar
+        ), //textfield*/
+
       body: ListView.builder(
-          itemCount: DatabaseRouter().clinics.values.toList()[0].doctors.length,
+          itemCount: filteredDoctorList.length,
           itemBuilder: (BuildContext context, int index) => Card(
               elevation: 2.0,
               child: ListTile(
                   onTap: () {
                     Navigator.push(context,
                         new MaterialPageRoute(builder: (ctxt) {
-                      return DetailsPage(DatabaseRouter()
-                          .clinics
-                          .values
-                          .toList()[0]
-                          .doctors[index]);
+                      return DetailsPage(filteredDoctorList[index]);
                     }));
                   },
-                  title: Text(DatabaseRouter()
-                      .clinics
-                      .values
-                      .toList()[0]
-                      .doctors[index]
-                      .name
-                      .toString())))
-          //? searchedData()
-
-          ),
+                  title: Text(filteredDoctorList[index].name.toString())))),
       //*If you want access the database, new DatabaseRouter().clinics;
       //* for a list you can use new DatabaseRouter().clinics.values;
     );
