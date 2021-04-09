@@ -29,7 +29,9 @@ class _SearchState extends State<Search> {
         DatabaseRouter().clinics.values.toList()[0].doctors;
     int length = doctorList.length;
     for (int i = 0; i < length; i++) {
-      if (doctorList[i].specialties[0] == value) {
+      if (doctorList[i].specialties[0].toLowerCase() == value.toLowerCase() || 
+          doctorList[i].name.toLowerCase() == value.toLowerCase() || 
+          doctorList[i].location.toLowerCase() == value.toLowerCase())   {
         filteredDoctorList.add(doctorList[i]);
       }
     }
