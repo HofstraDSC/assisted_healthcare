@@ -3,8 +3,6 @@ import 'package:assisted_healthcare/Objects/Doctor.dart';
 import 'package:assisted_healthcare/Pages/home/doctor_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:assisted_healthcare/services/DataController.dart';
-import 'package:get/get.dart';
 import 'package:assisted_healthcare/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
@@ -22,17 +20,18 @@ class _SearchState extends State<Search> {
   bool isExecuted = false;
 
   List<Doctor> filteredDoctorList = [];
-  // when search is submitted, filter doctorList to just the doctors with the specified specialty
+  // when search is submitted, filter doctorList to just the doctors with the specified specialty, full name or location
   void onSubmitted(String value) {
     filteredDoctorList = [];
     List<Doctor> doctorList =
         DatabaseRouter().clinics.values.toList()[0].doctors;
     int length = doctorList.length;
     for (int i = 0; i < length; i++) {
-      if (doctorList[i].specialties[0].toLowerCase() == value.toLowerCase() || 
-          doctorList[i].name.toLowerCase() == value.toLowerCase() || 
-          doctorList[i].location.toLowerCase() == value.toLowerCase())   {
+      if (doctorList[i].specialties[0].toLowerCase() == value.toLowerCase() ||
+          doctorList[i].name.toLowerCase() == value.toLowerCase() ||
+          doctorList[i].location.toLowerCase() == value.toLowerCase()) {
         filteredDoctorList.add(doctorList[i]);
+        print("Doctors length is " + length.toString());
       }
     }
   }
@@ -68,15 +67,6 @@ class _SearchState extends State<Search> {
               .add(DatabaseRouter().clinics.values.toList()[0].doctors[i].name);
         }
       }
-      // for (int i = 0;
-      //     i < DatabaseRouter().clinics.values.toList()[0].doctors.length;
-      //     i++) {
-      //   var filteredDoctors = print(
-      //       .where((doc) => doc.doctors[i].name
-      //           .toString()
-      //           .toLowerCase()
-      //           .contains(searchController.text.toLowerCase())));
-      // }
       return filtered;
     } else {
       return null;
@@ -102,15 +92,6 @@ class _SearchState extends State<Search> {
               .add(DatabaseRouter().clinics.values.toList()[0].doctors[i].name);
         }
       }
-      // for (int i = 0;
-      //     i < DatabaseRouter().clinics.values.toList()[0].doctors.length;
-      //     i++) {
-      //   var filteredDoctors = print(
-      //       .where((doc) => doc.doctors[i].name
-      //           .toString()
-      //           .toLowerCase()
-      //           .contains(searchController.text.toLowerCase())));
-      // }
     }
   }
 
@@ -118,22 +99,6 @@ class _SearchState extends State<Search> {
     return new AppBar(
       title: searchBar.getSearchAction(context),
       actions: [
-        /*GetBuilder<DataController>(
-          init: DataController(),
-          builder: (val) {
-            var searchIcon = IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  val.queryData(searchController.text).then((value) {
-                    snapshotData = value;
-                    setState(() {
-                      isExecuted = true;
-                    });
-                  });
-                });
-            return searchIcon;
-          },
-        ),*/
         TextButton.icon(
           icon: Icon(Icons.person),
           label: Text('Logout'),
@@ -150,20 +115,8 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
-      // floatingActionButton:
-      //     FloatingActionButton(child: Icon(Icons.clear), onPressed: () {}),
       backgroundColor: Colors.white,
       appBar: searchBar.build(context),
-
-      /*TextField(
-          style: TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-              hintText: 'Search Doctors...',
-              hintStyle: TextStyle(color: Colors.black)),
-          controller: searchController,
-          // onChanged: () {},
-        ), //textfield*/
-
       body: ListView.builder(
           itemCount: filteredDoctorList.length,
           itemBuilder: (BuildContext context, int index) => Card(
@@ -176,8 +129,6 @@ class _SearchState extends State<Search> {
                     }));
                   },
                   title: Text(filteredDoctorList[index].name.toString())))),
-      //*If you want access the database, new DatabaseRouter().clinics;
-      //* for a list you can use new DatabaseRouter().clinics.values;
     );
     return scaffold; //scaffold
   }

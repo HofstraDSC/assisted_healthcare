@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseRouter {
   static final DatabaseRouter _db = DatabaseRouter._internal();
-  // List<Textbook> textbooks;
   Map<String, DoctorList> clinics;
 
   factory DatabaseRouter() {
